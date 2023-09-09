@@ -18,7 +18,7 @@ export const editProfile = async (req, res) => {
         validationErrors.push(["firstName", "is required"])
     }
     if(mobile){
-        const isMobileExist = await User.findOne({ mobile })
+        const isMobileExist = await User.findOne({ mobile, _id: {$ne: new mongoose.Types.ObjectId(userId)} })
         if(isMobileExist) {
             validationErrors.push(["mobile", "already exists"])
         }

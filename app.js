@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import database from './config/database.js';
 import rootRouter from './routes/index.js';
 import cookieParser from 'cookie-parser'
+import cors from 'cors'
 
 dotenv.config();
 database.connect();
@@ -10,13 +11,7 @@ database.connect();
 const PORT = process.env.PORT;
 const app = express();
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    next();
-});
+app.use(cors());
 
 app.use(express.json());
 app.use(cookieParser())

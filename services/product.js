@@ -6,6 +6,7 @@ import uploadToS3 from "./s3.js";
 
 export const addProduct = async (req, res) => {
     let {name, description, category, sellingPrice, actualPrice, contents} = req.body;
+    const isAdmin = req.verifiedAdmin
     const userId = req.verifiedUserId;
     const images = req.files;
     sellingPrice = parseInt(sellingPrice);
@@ -55,7 +56,8 @@ export const addProduct = async (req, res) => {
         actualPrice,
         contents,
         images: imagesUrl,
-        at: new Date()
+        at: new Date(),
+        ...(isAdmin ? {adminStatus: "accepted"} : {})
     })
     res.status(200).json({data: productData})
 }
@@ -70,7 +72,7 @@ export const getProducts = async (req, res) => {
     }).sort(
         sort === 'price-low' ? {sellingPrice: 1} :
         sort === 'price-high' ? {sellingPrice: -1} :
-        sort === 'recent' ? {at: -1} : {}
+        sort === 'recent' ? {at: -1} : {at: -1}
     ).skip(parseInt(page) * parseInt(pageSize)).limit(pageSize);
     res.status(200).json({data: products})
 }
@@ -92,4 +94,12 @@ export const getAddedProducts = async (req, res) => {
         userId: new mongoose.Types.ObjectId(userId)
     }).sort({at: -1}).skip(parseInt(page) * parseInt(pageSize)).limit(pageSize);
     res.status(200).json({data: products})
+}
+
+export const deleteProduct = async (req, res) => {
+    const { productId } = req.query;
+    await Product.deleteOne({
+        _id: new mongoose.Types.ObjectId(productId)
+    })
+    res.status(200).json({data: true})
 }

@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post("/edit-profile", auth, serviceHandler(editProfile));
 
-router.post("/contact-us", auth, serviceHandler(contactUs))
+router.post("/contact-us", auth, serviceHandler(contactUs));
 
 const userRouter = router;
 

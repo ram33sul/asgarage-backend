@@ -32,55 +32,55 @@ export const getOrders = async (req, res) => {
                 at: 1,
                 userId: {
                     $arrayElemAt: [
-                        ["productDetails.userId"],
+                        ["$productDetails.userId"],
                         0
                     ]
                 },
                 name: {
                     $arrayElemAt: [
-                        ["productDetails.name"],
+                        ["$productDetails.name"],
                         0
                     ]
                 },
                 description: {
                     $arrayElemAt: [
-                        ["productDetails.description"],
+                        ["$productDetails.description"],
                         0
                     ]
                 },
                 category: {
                     $arrayElemAt: [
-                        ["productDetails.category"],
+                        ["$productDetails.category"],
                         0
                     ]
                 },
                 images: {
                     $arrayElemAt: [
-                        ["productDetails.images"],
+                        "$productDetails.images",
                         0
                     ]
                 },
                 sellingPrice: {
                     $arrayElemAt: [
-                        ["productDetails.sellingPrice"],
+                        ["$productDetails.sellingPrice"],
                         0
                     ]
                 },
                 actualPrice: {
                     $arrayElemAt: [
-                        ["productDetails.actualPrice"],
+                        ["$productDetails.actualPrice"],
                         0
                     ]
                 },
                 contents: {
                     $arrayElemAt: [
-                        ["productDetails.contents"],
+                        ["$productDetails.contents"],
                         0
                     ]
                 },
                 adminStatus: {
                     $arrayElemAt: [
-                        ["productDetails.adminStatus"],
+                        ["$productDetails.adminStatus"],
                         0
                     ]
                 },
