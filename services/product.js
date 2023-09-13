@@ -3,6 +3,7 @@ import Product from "../models/productSchema.js";
 import validateInputs from "../validation/inputs.js";
 import { validateImages } from "../validation/images.js";
 import uploadToS3 from "./s3.js";
+import Category from "../models/categorySchema.js";
 
 export const addProduct = async (req, res) => {
     let {name, description, category, sellingPrice, actualPrice, contents} = req.body;
@@ -17,7 +18,6 @@ export const addProduct = async (req, res) => {
         [description, 'description'],
         [sellingPrice, 'price', 'sellingPrice'],
         [actualPrice, 'price', 'actualPrice'],
-        [category, 'productCategory', 'category']
     ]);
     if(!Array.isArray(contents)) {
         validationErrors.push(['contents', 'must be an array'])
@@ -44,6 +44,8 @@ export const addProduct = async (req, res) => {
     }
     const imagesErrors = validateImages(images);
     if(imagesErrors.length !== 0 ) validationErrors.push(['images',imagesErrors])
+    const categoryDetails = await Category.findOne({name: category});
+    if(!categoryDetails) validationErrors.push(["category", "is not valie"])
     if(validationErrors.length !== 0) return res.status(400).send({error: validationErrors})
     contents = contents.map(({field, value}) => ({field, value}));
     const imagesUrl = await uploadToS3(images)

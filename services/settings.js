@@ -92,3 +92,11 @@ export const showPopup = async (req, res) => {
     })
     res.status(200).json({data: true})
 }
+
+export const changePasswordAdmin = async (req, res) => {
+    const {prevPassword, password} = req.body;
+    const adminData = await Admin.findOne();
+    if(adminData.password !== prevPassword) return res.status(400).send({error: "Previous password is incorrect"})
+    await Admin.updateOne({},{$set: {password}});
+    res.status(200).json({data: true})
+}
